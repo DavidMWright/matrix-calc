@@ -1,2 +1,6 @@
 ﻿  main.cpp
+c:\users\dwrig\desktop\matrix calculator\matrixcalculator\matrixcalculator\main.cpp(112): warning C4018: '<': signed/unsigned mismatch
+c:\users\dwrig\desktop\matrix calculator\matrixcalculator\matrixcalculator\main.cpp(115): warning C4018: '<': signed/unsigned mismatch
+c:\users\dwrig\desktop\matrix calculator\matrixcalculator\matrixcalculator\main.cpp(127): warning C4018: '<': signed/unsigned mismatch
+c:\users\dwrig\desktop\matrix calculator\matrixcalculator\matrixcalculator\main.cpp(129): warning C4018: '<': signed/unsigned mismatch
   MatrixCalculator.vcxproj -> C:\Users\dwrig\Desktop\Matrix Calculator\MatrixCalculator\Debug\MatrixCalculator.exe
