@@ -6,10 +6,12 @@
 
 using namespace std;
 
-typedef vector<vector<int>> Matrix;
+typedef vector<vector<double>> Matrix;
 
+vector<double>add (vector<double> left, vector<double> right);
+vector<double>multiply (vector<double> row, double scaler);
 void printTitle ();
-void enterMatrix (Matrix &matrix);
+void enterMatrix (Matrix &matrix, int &rows, int &columns, char op);
 void printMatrix (Matrix matrix);
 Matrix add (Matrix matrix1, Matrix matrix2);
 Matrix mult (Matrix matrix1, Matrix matrix2);
@@ -21,9 +23,14 @@ int main ()
 	Matrix result, matrix1, matrix2;
 	char operation;
 	char cont = 'n';
+	int rows;
+	int columns;
 
 	do
 	{
+		rows = 0;
+		columns = 0;
+
 		system ("CLS");
 		printTitle ();
 
@@ -33,19 +40,19 @@ int main ()
 		switch (operation)
 		{
 			case 'a':
-				enterMatrix (matrix1);
-				enterMatrix (matrix2);
+				enterMatrix (matrix1, rows, columns, 'a');
+				enterMatrix (matrix2, rows, columns, 'a');
 				result = add (matrix1, matrix2);
 				break;
 
 			case 'm':
-				enterMatrix (matrix1);
-				enterMatrix (matrix2);
+				enterMatrix (matrix1, rows, columns, 'm');
+				enterMatrix (matrix2, rows, columns, 'm');
 				result = mult (matrix1, matrix2);
 				break;
 
 			case 'r':
-				enterMatrix (matrix1);
+				enterMatrix (matrix1, rows, columns, 'r');
 				result = reduce (matrix1);
 				break;
 		}
@@ -67,7 +74,7 @@ int main ()
 		cout << "\n";
 
 		printMatrix (matrix2);
-		cout << "=\n";
+		cout << "=\n\n";
 		printMatrix (result);
 
 		do
@@ -83,6 +90,29 @@ int main ()
 }
 
 
+
+vector<double>add(vector<double> left, vector<double> right)
+{
+	vector<double> temp = right;
+
+	for (int i = 0; i < right.size (); i++)
+	{
+		temp[i] = left[i] + right[i];
+	}
+
+	return temp;
+}
+
+vector<double>multiply (vector<double> row, double scaler)
+{
+	for (int i = 0; i < row.size (); i++)
+	{
+		row[i] = row[i] * scaler;
+	}
+
+	return row;
+}
+
 void printTitle ()
 {
 	cout << "*********************\n"
@@ -90,20 +120,25 @@ void printTitle ()
 			 << "*********************\n"
 			 << "Addition: a\n"
 			 << "Multiplication: m\n"
-			 << "Row Reduction: r\n";
+			 << "Row Echelon Form: r\n";
 }
 
-
-void enterMatrix (Matrix &matrix)
+void enterMatrix (Matrix &matrix, int &rows, int &columns, char op)
 {
-	int rows, columns;
-	vector<int> row;
+	vector<double> row;
 	int num;
 
-	cout << "Enter # Rows: ";
-	cin >> rows;
-	cout << "Enter # Columns: ";
-	cin >> columns;
+	if (rows == 0)
+	{
+		cout << "Enter # Rows: ";
+		cin >> rows;
+	}
+
+	if (columns == 0 || op == 'm')
+	{
+		cout << "Enter # Columns: ";
+		cin >> columns;
+	}
 
 	for (int i = 0; i < rows; i++)
 	{
@@ -128,7 +163,7 @@ void printMatrix (Matrix matrix)
 		cout << "|";
 		for (int j = 0; j < (int)matrix[i].size (); j++)
 		{
-			cout << matrix[i][j] << " ";
+			cout << setw (3) << matrix[i][j] << " ";
 		}
 		cout << "|\n";
 	}
@@ -154,7 +189,7 @@ Matrix mult (Matrix matrix1, Matrix matrix2)
 	int i, j, k;
 	int entry = 0;
 	Matrix result;
-	vector<int> push;
+	vector<double> push;
 
 	for (i = 0; i < (int)matrix2[0].size (); i++)
 	{
@@ -182,6 +217,21 @@ Matrix mult (Matrix matrix1, Matrix matrix2)
 
 Matrix reduce (Matrix matrix)
 {
+	int rows = matrix.size ();
+	int columns = matrix[0].size ();
+
+	for (int j = 0; j < rows - 1; j++)
+	{
+		if (matrix[j][j] != 0)
+		{
+			matrix[j] = multiply (matrix[j], (1 / matrix[j][j]));
+
+			for (int i = j + 1; i < rows; i++)
+			{
+				matrix[i] = add (multiply (matrix[j], -1 * matrix[i][j]), matrix[i]);
+			}
+		}
+	}
 
 	return matrix;
 }
