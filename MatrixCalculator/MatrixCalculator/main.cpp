@@ -16,6 +16,7 @@ void printMatrix (Matrix matrix);
 Matrix add (Matrix matrix1, Matrix matrix2);
 Matrix mult (Matrix matrix1, Matrix matrix2);
 Matrix reduce (Matrix matrix);
+void clear (Matrix &matrix);
 
 
 int main ()
@@ -28,6 +29,9 @@ int main ()
 
 	do
 	{
+		clear (result);
+		clear (matrix1);
+		clear (matrix2);
 		rows = 0;
 		columns = 0;
 
@@ -41,13 +45,16 @@ int main ()
 		{
 			case 'a':
 				enterMatrix (matrix1, rows, columns, 'a');
+				cout << "\n";
 				enterMatrix (matrix2, rows, columns, 'a');
 				result = add (matrix1, matrix2);
 				break;
 
 			case 'm':
 				enterMatrix (matrix1, rows, columns, 'm');
-				enterMatrix (matrix2, rows, columns, 'm');
+				cout << "\n";
+				rows = 0;
+				enterMatrix (matrix2, columns, rows, 'm');
 				result = mult (matrix1, matrix2);
 				break;
 
@@ -234,4 +241,10 @@ Matrix reduce (Matrix matrix)
 	}
 
 	return matrix;
+}
+
+void clear (Matrix &matrix)
+{
+	matrix.clear ();
+	matrix.shrink_to_fit ();
 }
