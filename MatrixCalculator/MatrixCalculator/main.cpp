@@ -16,6 +16,7 @@ void printMatrix (Matrix matrix);
 Matrix add (Matrix matrix1, Matrix matrix2);
 Matrix mult (Matrix matrix1, Matrix matrix2);
 Matrix reduce (Matrix matrix);
+Matrix transpose (Matrix matrix);
 void clear (Matrix &matrix);
 
 
@@ -47,6 +48,7 @@ int main ()
 				enterMatrix (matrix1, rows, columns, 'a');
 				cout << "\n";
 				enterMatrix (matrix2, rows, columns, 'a');
+				cout << "\n";
 				result = add (matrix1, matrix2);
 				break;
 
@@ -55,13 +57,20 @@ int main ()
 				cout << "\n";
 				rows = 0;
 				enterMatrix (matrix2, columns, rows, 'm');
+				cout << "\n";
 				result = mult (matrix1, matrix2);
 				break;
 
 			case 'r':
 				enterMatrix (matrix1, rows, columns, 'r');
+				cout << "\n";
 				result = reduce (matrix1);
 				break;
+
+			case 't':
+				enterMatrix (matrix1, rows, columns, 't');
+				cout << "\n";
+				result = transpose (matrix1);
 		}
 
 		printMatrix (matrix1);
@@ -74,8 +83,10 @@ int main ()
 			case 'm': cout << "*";
 				break;
 
-			default:
+			case 'r': cout << "\nIn Row Echolon From";
 				break;
+
+			case 't': cout << "\ntTranspose";
 		}
 
 		cout << "\n";
@@ -127,7 +138,8 @@ void printTitle ()
 			 << "*********************\n"
 			 << "Addition: a\n"
 			 << "Multiplication: m\n"
-			 << "Row Echelon Form: r\n";
+			 << "Row Echelon Form: r\n"
+			 << "Transpose: t\n";
 }
 
 void enterMatrix (Matrix &matrix, int &rows, int &columns, char op)
@@ -241,6 +253,26 @@ Matrix reduce (Matrix matrix)
 	}
 
 	return matrix;
+}
+
+Matrix transpose (Matrix matrix)
+{
+	vector<double> row;
+	Matrix result;
+
+	for (int j = 0; j < matrix[0].size (); j++)
+	{
+		for (int i = 0; i < matrix.size (); i++)
+		{
+			row.push_back (matrix[i][j]);
+		}
+
+		result.push_back (row);
+		row.clear ();
+		row.shrink_to_fit ();
+	}
+
+	return result;
 }
 
 void clear (Matrix &matrix)
